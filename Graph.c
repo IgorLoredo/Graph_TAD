@@ -3,8 +3,6 @@
 #include <stdlib.h>
 
  
-
-
 Graph *newGraph(){
     Graph *graph = (Graph*)calloc(1,sizeof(Graph));
     return graph;
