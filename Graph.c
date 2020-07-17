@@ -4,19 +4,18 @@
 
  
 Graph *newGraph(){
-    Graph *graph = (Graph*)calloc(1,sizeof(Graph));
+    Graph *graph = (Graph*)calloc(1, sizeof(Graph));
     return graph;
 }
 
-Node *newNode(Actor actor, Movie movie){
-    Node *new = (Node*)malloc(sizeof(Node));
+Edge *newNode(Actor actor, Movie movie){
+    Edge *new = (Edge*)malloc(sizeof(Edge));
     new->actor_id = actor.index;
     new->movie_id = movie.index;
     new->next = NULL;
-    new->KB = 0;
+    new->KB = -1;
     return new;
 }
-
 
 Actor *newActor(char *name,int index){
     Actor *new  = (Actor*)malloc(sizeof(Actor));

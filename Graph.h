@@ -4,6 +4,9 @@
 #define ERROR -1
 #define SUCCESS 1
 
+#include <stdlib.h>
+#include <stdio.h>
+
 typedef struct actor{
     char *name;
     int index;
@@ -14,13 +17,12 @@ typedef struct movie{
     int index;
 }Movie;
 
-typedef struct node Node;
-
-struct node{
+typedef struct edge Edge;
+struct edge{
     int actor_id;
     int movie_id;
     int KB;
-    Node *next;
+    Edge *next;
 };
 
 typedef struct list_movie{
@@ -33,20 +35,20 @@ typedef struct list_actor{
    int nActor;
 }List_actor;
 
-
 typedef struct graph{
-   Node **list;
+   Edge **list;
    int nElement;
+   List_movie movieList;
+   List_actor actorList;
 }Graph;
-
 
 Graph *newGraph();
 
-Node *newNode(Actor, Movie);
+Edge *newEdge(Actor, Movie);
 
-Actor *newActor(char *,int);
+Actor *newActor(char *, int);
 
-Movie *newMovie(char *,int);
+Movie *newMovie(char *, int);
 
 int insertGraph(Node);
 
