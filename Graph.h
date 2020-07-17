@@ -15,6 +15,7 @@ typedef struct movie{
 }Movie;
 
 typedef struct node Node;
+
 struct node{
     int actor_id;
     int movie_id;
@@ -22,15 +23,27 @@ struct node{
     Node *next;
 };
 
+
+
 typedef struct graph{
    Node **list;
    int nElement;
 }Graph;
 
+
 Graph *newGraph();
 
 Node *newNode(Actor, Movie);
 
+Actor *newActor(char *,int);
+
+Movie *newMovie(char *,int);
+
 int insertGraph(Node);
+
+int readKB(FILE *,Graph*,Movie*,Actor*);
+
+
+
 
 #endif

@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
+ 
 
 
 Graph *newGraph(){
@@ -19,6 +19,22 @@ Node *newNode(Actor actor, Movie movie){
     return new;
 }
 
+
+Actor *newActor(char *name,int index){
+    Actor *new  = (Actor*)malloc(sizeof(Actor));
+    new->name = name;
+    new->index = index;
+    return new;
+}
+
+Movie *newMovie(char *name,int index){
+    Movie *new = (Movie*)malloc(sizeof(Movie));
+    new->name = name;
+    new->index = index;
+    return new;
+}
+
+
 int insertNode(Graph *graph, Node *node, int nactor_id){
     if(!graph || !node) return ERROR;
 
@@ -32,3 +48,7 @@ int insertNode(Graph *graph, Node *node, int nactor_id){
 
     return SUCCESS;
 }
+
+
+
+int readBK();
