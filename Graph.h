@@ -7,16 +7,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-typedef struct actor{
-    char *name;
-    int index;
-}Actor;
-
-typedef struct movie{
-    char *name;
-    int index;
-}Movie;
-
 typedef struct edge Edge;
 struct edge{
     int actor_id;
@@ -25,8 +15,19 @@ struct edge{
     Edge *next;
 };
 
+typedef struct actor{
+    char *name;
+    int index;
+    Edge *head;
+}Actor;
+
+typedef struct movie{
+    char *name;
+    int index;
+}Movie;
+
 typedef struct list_movie{
-   Movie **list;
+   Movie *list;
    int nMovie;
 }List_movie;
 
@@ -36,10 +37,8 @@ typedef struct list_actor{
 }List_actor;
 
 typedef struct graph{
-   Edge **list;
-   int nElement;
+   List_actor actorlist;
    List_movie movieList;
-   List_actor actorList;
 }Graph;
 
 Graph *newGraph();
@@ -50,7 +49,11 @@ Actor *newActor(char *, int);
 
 Movie *newMovie(char *, int);
 
-int insertGraph(Node);
+int insertActor(Graph *, Actor *);
+
+int insertMovie(Graph *, Movie *);
+
+int insertEdge(Graph *, Edge *, int);
 
 int readKB(FILE *,Graph*,List_movie*,List_actor*);
 
