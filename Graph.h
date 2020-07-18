@@ -50,11 +50,12 @@ Actor *newActor(char *, int);
 
 Movie *newMovie(char *, int);
 
-int insertGraph(Node);
+int insertGraph();
 
-int readKB(FILE *,Graph*,List_movie*,List_actor*);
+int readBK(Graph *);
 
 int addGraph(Graph *,Edge*, int pos);
+
 
 
 #endif

@@ -48,4 +48,11 @@ int insertNode(Graph *graph, Edge *node, int nactor_id){
 
 
 
-int readBK();
+int readBK(Graph *bk){
+    char *nome = (char*)malloc(200*sizeof(char));
+    while (fscanf(stdin, "%[^/]/", nome) != EOF) {
+
+        printf("%s\n",nome);
+    }
+    return SUCCESS;
+}
