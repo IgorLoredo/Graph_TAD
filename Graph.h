@@ -1,28 +1,60 @@
-#ifndef Graph
-#define Graph
+#ifndef _GRAPH_KB
+#define _GRAPH_KB
 
+#define ERROR -1
+#define SUCCESS 1
 
-#define ERRO -1
-#define SUCESS 1
+#include <stdlib.h>
+#include <stdio.h>
 
-typedef struct node{
-    struct *node;
-    int id;
-    char *Element;
-}Node;
+typedef struct actor{
+    char *name;
+    int index;
+}Actor;
 
+typedef struct movie{
+    char *name;
+    int index;
+}Movie;
+
+typedef struct edge Edge;
+struct edge{
+    int actor_id;
+    int movie_id;
+    int KB;
+    Edge *next;
+};
+
+typedef struct list_movie{
+   Movie **list;
+   int nMovie;
+}List_movie;
+
+typedef struct list_actor{
+   Actor **list;
+   int nActor;
+}List_actor;
 
 typedef struct graph{
-   Node **root;
+   Edge **list;
    int nElement;
+   List_movie movieList;
+   List_actor actorList;
 }Graph;
 
 Graph *newGraph();
 
-Node *newNode(Char *element,int id);
+Edge *newEdge(Actor, Movie);
 
-int addGraph(Graph *,Node*);
+Actor *newActor(char *, int);
 
+Movie *newMovie(char *, int);
+
+int insertGraph(Node);
+
+int readKB(FILE *,Graph*,List_movie*,List_actor*);
+
+int addGraph(Graph *,Node*, int pos);
 
 
 #endif

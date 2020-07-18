@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "(Windows) Iniciar",
+            "name": "(Linux) Iniciar",
             "type": "cppvsdbg",
             "request": "launch",
             "program": "insira o nome do programa, por exemplo ${workspaceFolder}/a.exe",
