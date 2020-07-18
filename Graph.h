@@ -54,7 +54,7 @@ int insertGraph(Node);
 
 int readKB(FILE *,Graph*,List_movie*,List_actor*);
 
-int addGraph(Graph *,Node*, int pos);
+int addGraph(Graph *,Edge*, int pos);
 
 
 #endif

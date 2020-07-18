@@ -32,7 +32,7 @@ Movie *newMovie(char *name,int index){
 }
 
 
-int insertNode(Graph *graph, Node *node, int nactor_id){
+int insertNode(Graph *graph, Edge *node, int nactor_id){
     if(!graph || !node) return ERROR;
 
     int i = 0;
