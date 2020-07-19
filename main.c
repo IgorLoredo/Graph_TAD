@@ -2,35 +2,34 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+void menu(){
+    printf("\n    Six Degrees of Kevin Bacon");
+    printf("\n    Inserir      - 1");
+    printf("\n    Calcular KB - 2");
+    printf("\n    Terminar - 3\n");
+}
 
-int  main() {
+void menuInsert(){
+    printf("\n    Inserir Arquivo - 1");
+    printf("\n    Inserir manual - 2");
+    printf("\n    Sair           - 3\n");
+}
 
-    char *name = (char*) malloc (50);
-    int id;
-    Movie *movie;
-    Actor *actor;
-    Edge *edge;
-    Graph *graph = newGraph();
-
-    printf("%d %d\n", graph->actorlist.nActor, graph->movieList.nMovie);
-
-    scanf(" %[^\n]", name);
-    movie = newMovie(name, graph->movieList.nMovie);
-    printf("%s\n", movie->name);
-
-    insertMovie(graph, movie);
-
-    scanf(" %[^\n]", name);
-    actor = newActor(name, graph->actorlist.nActor);
-    printf("%s\n", actor->name);
-
-    insertActor(graph, actor);
-
-    edge = newEdge(*actor, *movie);
-
-    insertEdge(graph, edge, 0);
+int main() {
+    Graph *KB = newGraph(); 
+    /*int flag = 1;
+    char *nome = (char*)malloc(200*sizeof(char));
+    do{
+       menu();
+       scanf("%d",&flag);
+       if(flag == 1){
+           menuInsert();
+           scanf("%d", &flag);
 
 
 
-    return 0;
+   }while(flag); */
+   readBK(KB);
+   
+   return 0;
 } 

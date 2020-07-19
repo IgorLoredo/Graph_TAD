@@ -52,8 +52,7 @@ int insertMovie(Graph *graph, Movie *newMovie){
 
 int insertEdge(Graph *graph, Edge *edge, int nactor_id){
     if(!graph || !edge || nactor_id < 0 || nactor_id > graph->actorlist.nActor) return ERROR;
-
-    int i = 0;
+    
     Actor *aux;
     
     aux = graph->actorlist.list[nactor_id];
@@ -76,5 +75,11 @@ int checkActor(Graph *graph, char *name){
 }
 
 
+int readBK(Graph *bk){
+    char *nome = (char*)malloc(200*sizeof(char));
+    while (fscanf(stdin, "%[^/]/", nome) != EOF) {
 
-int readBK();
+        printf("%s\n",nome);
+    }
+    return SUCCESS;
+}
