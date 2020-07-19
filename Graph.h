@@ -55,6 +55,8 @@ int insertMovie(Graph *, Movie *);
 
 int insertEdge(Graph *, Edge *, int);
 
+int checkActor(Graph *, char *);
+
 int readKB(FILE *,Graph*,List_movie*,List_actor*);
 
 

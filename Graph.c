@@ -64,6 +64,17 @@ int insertEdge(Graph *graph, Edge *edge, int nactor_id){
     return SUCCESS;
 }
 
+int checkActor(Graph *graph, char *name){
+    int i;
+    
+    for(i=0; i < graph->actorlist.nActor; i++){
+        if(!strcmp(graph->actorlist.list[i]->name, name))
+            return i;
+    }
+
+    return 0;
+}
+
 
 
 int readBK();
