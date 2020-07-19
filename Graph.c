@@ -8,7 +8,7 @@ Graph *newGraph(){
     return graph;
 }
 
-Edge *newEdge(Actor actor, Movie movie){
+Edge *newEdge(Actor *actor, Movie *movie){
     Edge *new = (Edge*)malloc(sizeof(Edge));
     new->actor_id = actor->index;
     new->movie_id = movie->index;
@@ -82,4 +82,24 @@ int readBK(Graph *bk){
         
     }
     return SUCCESS;
+}
+
+
+int printGraph(Graph *graph){
+    if(!graph) return ERROR;
+    int i;
+    for(i =0; i <graph->actorlist.nActor; i++){
+        printf("Ator: %s KB: %d \n",graph->actorlist.list[i]->name,graph->actorlist.list[i]->index);
+    }
+
+    for(i =0; i <graph->movieList.nMovie; i++){
+        printf("Filme: %s\n",graph->movieList.list->name);
+    }
+    return SUCCESS;
+}
+
+void dijkstra(Graph *graph, int origem, int destino){
+
+    
+
 }

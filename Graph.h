@@ -64,6 +64,6 @@ int readData(Graph *);
 
 int addGraph(Graph *,Edge*, int pos);
 
-
+int printGraph(Graph *);
 
 #endif
