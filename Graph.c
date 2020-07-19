@@ -1,3 +1,6 @@
+/* Igor Guilherme Pereira Loredo - 11275071 */
+/* Natã Silva Botelho            - 11275105 */
+
 #include "Graph.h"
 #include "Queue.h"
 #include <stdio.h>
@@ -64,7 +67,7 @@ int insertEdge(Graph *graph, Edge *edge){
     movieEdge->next = graph->movieList.list[edge->movie_id]->head;
     graph->movieList.list[movieEdge->movie_id]->head = movieEdge;
 
-    printf("ator %s conectado no filme %s, filme %s conectado em ator %s\n", graph->actorlist.list[edge->actor_id]->name, graph->movieList.list[edge->movie_id]->name, graph->movieList.list[movieEdge->movie_id]->name, graph->actorlist.list[movieEdge->actor_id]->name);
+    //printf("ator %s conectado no filme %s, filme %s conectado em ator %s\n", graph->actorlist.list[edge->actor_id]->name, graph->movieList.list[edge->movie_id]->name, graph->movieList.list[movieEdge->movie_id]->name, graph->actorlist.list[movieEdge->actor_id]->name);
 
     return SUCCESS;
 }
@@ -136,8 +139,8 @@ int getActor(Graph *graph, char *name){
 int printGraph(Graph *graph){
     if(!graph) return ERROR;
     int i;
-    for(i =0; i <graph->actorlist.nActor; i++){
-        printf("Ator: %s KB: %d \n",graph->actorlist.list[i]->name,graph->actorlist.list[i]->index);
+    for(i = 0; i <graph->actorlist.nActor; i++){
+        printf("Ator: %s KB: %d \n",graph->actorlist.list[i]->name, graph->actorlist.list[i]->index);
     }
 
     /*for(i =0; i <graph->movieList.nMovie; i++){
@@ -146,23 +149,31 @@ int printGraph(Graph *graph){
     return SUCCESS;
 }
 
+void searchActorKB(Graph *graph, int index){
+    int i, orig = 0, kb = -1;
 
-void seachActorKB(Graph *graph, int origem){
-    int i, orige, prox;
-    Queue *fila = newQueue();
-    int *cor = (int *)malloc(sizeof(int)*graph->actorlist.nActor);
-    int *ante = (int *)malloc(sizeof(int)*graph->actorlist.nActor);
+    Queue *queue = newQueue();
+    int *color = (int *)malloc(sizeof(int)*graph->actorlist.nActor);
+    int *prev = (int *)malloc(sizeof(int)*graph->actorlist.nActor);
+
     for(i = 0 ; i < graph->actorlist.nActor;i++){
-        cor[i] = 0;
-        ante[i] = -1;
+        color[i] = 0;
+        prev[i] = -1;
     }
     
     /*coloca a cor cinza */
-    cor[origem] = 1;
-    push(fila,origem);
+    color[orig] = 1;
+    push(queue, orig);
 
-    while(fila->tam > 0){
-        orige = pop(fila);
+    while(queue->tam > 0){
+        orig = pop(queue);
         
     }
+
+
+    printf("%s tem KB = %d\n", graph->actorlist.list[index]->name, kb);
+}
+
+void getKBworld(Graph *graph){
+    
 }

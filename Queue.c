@@ -1,8 +1,11 @@
+/* Igor Guilherme Pereira Loredo - 11275071 */
+/* Natã Silva Botelho            - 11275105 */
+
 #include "Graph.h"
 #include "Queue.h"
 #include <stdlib.h>
 #include <stdio.h>
-#include  <string.h>
+#include <string.h>
 
 Queue *newQueue(){
     Queue *new = (Queue*)calloc(1,sizeof(Queue));
@@ -20,7 +23,7 @@ void push(Queue *queue,int val){
 // retorna front, o primeiro item da fila
 int pop(Queue *queue){
     int front = queue->Queue[queue->front];
-    memcpy(queue,&queue[1],(queue->tam)*sizeof(int));
+    memcpy(queue, &queue[1], (queue->tam)*sizeof(int));
     queue->tam--;
     return front;
 }

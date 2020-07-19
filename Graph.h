@@ -1,3 +1,6 @@
+/* Igor Guilherme Pereira Loredo - 11275071 */
+/* Natã Silva Botelho            - 11275105 */
+
 #ifndef _GRAPH_KB
 #define _GRAPH_KB
 
@@ -58,14 +61,14 @@ int insertEdge(Graph *, Edge *);
 
 int checkActor(Graph *, char *);
 
-int insertGraph();
-
 int readData(Graph *);
 
 int getActor(Graph *, char*);
 
 int printGraph(Graph *);
 
-void seachActorKB(Graph *, int );
+void searchActorKB(Graph *, int );
+
+void getKBworld(Graph *);
 
 #endif
