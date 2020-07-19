@@ -8,10 +8,10 @@ Graph *newGraph(){
     return graph;
 }
 
-Edge *newEdge(Actor actor, Movie movie){
+Edge *newEdge(Actor *actor, Movie *movie){
     Edge *new = (Edge*)malloc(sizeof(Edge));
-    new->actor_id = actor.index;
-    new->movie_id = movie.index;
+    new->actor_id = actor->index;
+    new->movie_id = movie->index;
     new->next = NULL;
     new->KB = -1;
     return new;
@@ -19,53 +19,58 @@ Edge *newEdge(Actor actor, Movie movie){
 
 Actor *newActor(char *name, int index){
     Actor *new  = (Actor*)malloc(sizeof(Actor));
-    new->name = (char*) malloc (strlen(name));
-    memcpy(new->name, name, strlen(name));
+    new->name = (char*) malloc (strlen(name)+1);
+    strcpy(new->name, name);
     new->index = index;
     return new;
 }
 
 Movie *newMovie(char *name, int index){
     Movie *new = (Movie*)malloc(sizeof(Movie));
-    new->name = (char*) malloc (strlen(name));
-    memcpy(new->name, name, strlen(name));
+    new->name = (char*) malloc (strlen(name)+1);
+    strcpy(new->name, name);
     new->index = index;
     return new;
 }
 
 int insertActor(Graph *graph, Actor *newActor){
+    graph->actorlist.list = (Actor**) realloc (graph->actorlist.list, sizeof(Actor*)*(graph->actorlist.nActor+1));
+    graph->actorlist.list[newActor->index] = newActor;
+    //printf("%s %d\n", graph->actorlist.list[newActor->index]->name, graph->actorlist.list[newActor->index]->index);
     graph->actorlist.nActor++;
-    graph->actorlist.list = (Actor**) realloc (graph->actorlist.list, sizeof(Actor*)*(graph->actorlist.nActor));
-    graph->actorlist.list[newActor->index] = (Actor*) malloc (sizeof(Actor));
 
     return SUCCESS;
 }
 
 int insertMovie(Graph *graph, Movie *newMovie){
-    graph->movieList.list = (Movie*) realloc (graph->movieList.list, sizeof(Movie)*(graph->movieList.nMovie+1));
-    graph->movieList.list[graph->movieList.nMovie].name = newMovie->name;
-    graph->movieList.list[graph->movieList.nMovie].index = newMovie->index;
+    graph->movieList.list = (Movie**) realloc (graph->movieList.list, sizeof(Movie*)*(graph->movieList.nMovie+1));
+    graph->movieList.list[graph->movieList.nMovie] = newMovie;
+    //printf("%s %d\n", graph->movieList.list[newMovie->index]->name, graph->movieList.list[newMovie->index]->index);
     graph->movieList.nMovie++;
 
     return SUCCESS;
 }
 
-int insertEdge(Graph *graph, Edge *edge, int nactor_id){
-    if(!graph || !edge || nactor_id < 0 || nactor_id > graph->actorlist.nActor) return ERROR;
+int insertEdge(Graph *graph, Edge *edge){
+    if(!graph || !edge) return ERROR;
     
-    Actor *aux;
+    Edge *movieEdge = (Edge*) malloc (sizeof(Edge));
+    memcpy(movieEdge, edge, sizeof(Edge));
     
-    aux = graph->actorlist.list[nactor_id];
+    edge->next = graph->actorlist.list[edge->actor_id]->head;
+    graph->actorlist.list[edge->actor_id]->head = edge;;
+    
+    movieEdge->next = graph->movieList.list[edge->movie_id]->head;
+    graph->movieList.list[movieEdge->movie_id]->head = movieEdge;
 
-    edge->next = aux->head;
-    aux->head = edge;
+    printf("ator %s conectado no filme %s, filme %s conectado em ator %s\n", graph->actorlist.list[edge->actor_id]->name, graph->movieList.list[edge->movie_id]->name, graph->movieList.list[movieEdge->movie_id]->name, graph->actorlist.list[movieEdge->actor_id]->name);
 
     return SUCCESS;
 }
 
 int checkActor(Graph *graph, char *name){
     int i;
-    
+
     for(i=0; i < graph->actorlist.nActor; i++){
         if(!strcmp(graph->actorlist.list[i]->name, name))
             return i;
@@ -75,11 +80,43 @@ int checkActor(Graph *graph, char *name){
 }
 
 
-int readBK(Graph *bk){
-    char *nome = (char*)malloc(200*sizeof(char));
-    while (fscanf(stdin, "%[^/]/", nome) != EOF) {
+int readData(Graph *graph){
+    char *name = (char*)malloc(200*sizeof(char));
+    char *kevinB = "Bacon, Kevin";
+    char auxchar;
+    int flag = 1, actorIndex;
+    Movie *auxMovie;
+    Actor *auxActor;
+    Edge *auxEdge;
+    FILE *datafile = fopen("input-top-grossing.txt", "r");
+    
+    while (fscanf(datafile, "%[^/||^\n]%c", name, &auxchar) != EOF) {
+        if(flag){
+            auxMovie = newMovie(name, graph->movieList.nMovie);
+            insertMovie(graph, auxMovie);
+        }
+        else{
+            actorIndex = checkActor(graph, name);
+            if(!strcmp(name, kevinB))   //checa se e o kevin bacon
+                auxActor = newActor(name, 0);
+            else if(actorIndex != 0)    //checa se o ator ja foi insertido
+                auxActor = newActor(name, actorIndex);
+            else {                       //caso nao seja nenhuma opcao anterior, insere um novo ator
+                auxActor = newActor(name, graph->actorlist.nActor);
+                insertActor(graph, auxActor);
+            }   
+            
+            auxEdge = newEdge(auxActor, auxMovie);
+            insertEdge(graph, auxEdge);
+            //printf("aresta entre %s e %s criada\n", graph->actorlist.list[auxEdge->actor_id]->name, graph->movieList.list[auxEdge->movie_id]->name);
+        }
 
-        printf("%s\n",nome);
+
+        if(auxchar == '\n') flag = 1;
+        else if(auxchar == '/') flag = 0;
+
+        free(name);
+        name = (char*)malloc(200*sizeof(char));
     }
     return SUCCESS;
 }

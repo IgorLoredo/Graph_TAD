@@ -16,7 +16,7 @@ void menuInsert(){
 }
 
 int main() {
-    Graph *KB = newGraph(); 
+    Graph *graph = newGraph(); 
     /*int flag = 1;
     char *nome = (char*)malloc(200*sizeof(char));
     do{
@@ -29,7 +29,7 @@ int main() {
 
 
    }while(flag); */
-   readBK(KB);
+   readData(graph);
    
    return 0;
 } 
