@@ -24,6 +24,7 @@ typedef struct actor{
 typedef struct movie{
     char *name;
     int index;
+    Edge *head;
 }Movie;
 
 typedef struct list_movie{
@@ -43,7 +44,7 @@ typedef struct graph{
 
 Graph *newGraph();
 
-Edge *newEdge(Actor, Movie);
+Edge *newEdge(Actor *, Movie *);
 
 Actor *newActor(char *, int);
 
@@ -59,7 +60,7 @@ int checkActor(Graph *, char *);
 
 int insertGraph();
 
-int readBK(Graph *);
+int readData(Graph *);
 
 int addGraph(Graph *,Edge*, int pos);
 

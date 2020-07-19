@@ -29,7 +29,7 @@ int main() {
 
 
    }while(flag); */
-   readBK(KB);
+   readData(graph);
    
    return 0;
 } 

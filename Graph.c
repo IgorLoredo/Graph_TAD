@@ -10,8 +10,8 @@ Graph *newGraph(){
 
 Edge *newEdge(Actor actor, Movie movie){
     Edge *new = (Edge*)malloc(sizeof(Edge));
-    new->actor_id = actor.index;
-    new->movie_id = movie.index;
+    new->actor_id = actor->index;
+    new->movie_id = movie->index;
     new->next = NULL;
     new->KB = -1;
     return new;
