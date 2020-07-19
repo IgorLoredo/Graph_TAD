@@ -8,14 +8,15 @@ void menu(){
     printf("\n    Calcular KB - 2");
     printf("\n    Terminar - 3\n");
 }
- void menuInsert(){
+
+void menuInsert(){
     printf("\n    Inserir Arquivo - 1");
     printf("\n    Inserir manual - 2");
     printf("\n    Sair           - 3\n");
- }
+}
 
-int  main() {
-     Graph *KB = newGraph(); 
+int main() {
+    Graph *KB = newGraph(); 
     /*int flag = 1;
     char *nome = (char*)malloc(200*sizeof(char));
     do{
@@ -25,7 +26,7 @@ int  main() {
            menuInsert();
            scanf("%d", &flag);
 
-       }
+
 
    }while(flag); */
    readBK(KB);
