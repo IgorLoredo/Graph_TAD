@@ -1,4 +1,5 @@
 #include "Graph.h"
+#include "Queue.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -120,3 +121,19 @@ int readData(Graph *graph){
     }
     return SUCCESS;
 }
+
+
+int printGraph(Graph *graph){
+    if(!graph) return ERROR;
+    int i;
+    for(i =0; i <graph->actorlist.nActor; i++){
+        printf("Ator: %s KB: %d \n",graph->actorlist.list[i]->name,graph->actorlist.list[i]->index);
+    }
+
+    for(i =0; i <graph->movieList.nMovie; i++){
+        printf("Filme: %s\n",graph->movieList.list->name);
+    }
+    return SUCCESS;
+}
+
+
