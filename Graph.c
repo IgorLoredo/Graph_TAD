@@ -149,29 +149,63 @@ int printGraph(Graph *graph){
     return SUCCESS;
 }
 
+Edge *first_adj(Graph *graph, int v){
+    if(graph->actorlist.list[v]->head)
+        return graph->actorlist.list[v]->head;
+
+    return NULL;
+}
+
+Edge *next_adj(Graph *graph, Edge *pointer){
+    if(pointer->next)
+        return pointer->next;
+
+    return NULL;
+}
+
 void searchActorKB(Graph *graph, int index){
-    int i, orig = 0, kb = -1;
+    int i, pointer;
+    Edge *auxPointer;
 
-    Queue *queue = newQueue();
-    int *color = (int *)malloc(sizeof(int)*graph->actorlist.nActor);
-    int *prev = (int *)malloc(sizeof(int)*graph->actorlist.nActor);
+    Queue *queueA = newQueue();
+    Queue *queueM = newQueue();
+    int *colorA = (int *)malloc(sizeof(int)*graph->actorlist.nActor);
+    int *colorM = (int *)malloc(sizeof(int)*graph->movieList.nMovie);
+    int *prevA = (int *)malloc(sizeof(int)*graph->actorlist.nActor);
+    int *prevM = (int *)malloc(sizeof(int)*graph->actorlist.nActor);
 
-    for(i = 0 ; i < graph->actorlist.nActor;i++){
-        color[i] = 0;
-        prev[i] = -1;
+    for(i = 0 ; i < graph->actorlist.nActor; i++){
+        colorA[i] = 0;
+        prevA[i] = -1;
     }
     
+    for(i = 0 ; i < graph->movieList.nMovie; i++){
+        colorM[i] = 0;
+        prevM[i] = -1;
+    }
     /*coloca a cor cinza */
-    color[orig] = 1;
-    push(queue, orig);
+    colorA[index] = 1;
+    push(queueA, index);
 
-    while(queue->tam > 0){
-        orig = pop(queue);
-        
+    while(queueA->tam >= 0){
+        index = pop(queueA);
+        auxPointer = first_adj(graph, index);
+        colorM[auxPointer->movie_id] = 1;
+        while(auxPointer){
+            pointer = auxPointer->movie_id;
+            if(colorA[pointer] == 0){
+                colorA[pointer] = 1;
+                push(queueA, pointer);
+                prevA[pointer] = index;
+            }
+            auxPointer = next_adj(graph, auxPointer);
+        }
+        colorA[pointer] = 2;
+    }
+    if(prevA[0] == -1){
+        printf("Ator nao tem ligacao com Kevin Bacon\n");
     }
 
-
-    printf("%s tem KB = %d\n", graph->actorlist.list[index]->name, kb);
 }
 
 void getKBworld(Graph *graph){
