@@ -28,9 +28,9 @@ int main() {
            menuInsert();
            scanf("%d", &flag);
 
-
-
    }while(flag); */
-   
+
+   printGraph(graph);
+
    return 0;
 } 

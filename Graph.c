@@ -1,4 +1,5 @@
 #include "Graph.h"
+#include "Queue.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -19,16 +20,16 @@ Edge *newEdge(Actor *actor, Movie *movie){
 
 Actor *newActor(char *name, int index){
     Actor *new  = (Actor*)malloc(sizeof(Actor));
-    new->name = (char*) malloc (strlen(name)+1);
-    strcpy(new->name, name);
+    new->name = (char*) malloc (strlen(name));
+    memcpy(new->name, name, strlen(name));
     new->index = index;
     return new;
 }
 
 Movie *newMovie(char *name, int index){
     Movie *new = (Movie*)malloc(sizeof(Movie));
-    new->name = (char*) malloc (strlen(name)+1);
-    strcpy(new->name, name);
+    new->name = (char*) malloc (strlen(name));
+    memcpy(new->name, name, strlen(name));
     new->index = index;
     return new;
 }
@@ -70,7 +71,7 @@ int insertEdge(Graph *graph, Edge *edge){
 
 int checkActor(Graph *graph, char *name){
     int i;
-
+    
     for(i=0; i < graph->actorlist.nActor; i++){
         if(!strcmp(graph->actorlist.list[i]->name, name))
             return i;
@@ -79,7 +80,7 @@ int checkActor(Graph *graph, char *name){
     return 0;
 }
 
-//leitura do arquivo com as entradas
+
 int readData(Graph *graph){ 
     char *name = (char*)malloc(200*sizeof(char));
     char *kevinB = "Bacon, Kevin";
@@ -129,4 +130,18 @@ int getActor(Graph *graph, char *name){
     }
 
     return ERROR;
+}
+
+
+int printGraph(Graph *graph){
+    if(!graph) return ERROR;
+    int i;
+    for(i =0; i <graph->actorlist.nActor; i++){
+        printf("Ator: %s KB: %d \n",graph->actorlist.list[i]->name,graph->actorlist.list[i]->index);
+    }
+
+    for(i =0; i <graph->movieList.nMovie; i++){
+        printf("Filme: %s\n",graph->movieList.list[i]->name);
+    }
+    return SUCCESS;
 }
