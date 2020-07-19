@@ -79,8 +79,8 @@ int checkActor(Graph *graph, char *name){
     return 0;
 }
 
-
-int readData(Graph *graph){
+//leitura do arquivo com as entradas
+int readData(Graph *graph){ 
     char *name = (char*)malloc(200*sizeof(char));
     char *kevinB = "Bacon, Kevin";
     char auxchar;
@@ -119,4 +119,14 @@ int readData(Graph *graph){
         name = (char*)malloc(200*sizeof(char));
     }
     return SUCCESS;
+}
+
+int getActor(Graph *graph, char *name){
+    int i;
+    for(i=0; i<graph->actorlist.nActor; i++){
+        if(!strcmp(graph->actorlist.list[i]->name, name))
+            return i;
+    }
+
+    return ERROR;
 }

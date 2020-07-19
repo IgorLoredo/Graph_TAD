@@ -4,8 +4,8 @@
 
 void menu(){
     printf("\n    Six Degrees of Kevin Bacon");
-    printf("\n    Inserir      - 1");
-    printf("\n    Calcular KB - 2");
+    printf("\n    Numero de Kevin Bacon      - 1");
+    printf("\n    Mundo de Kevin Bacon - 2");
     printf("\n    Terminar - 3\n");
 }
 
@@ -17,6 +17,8 @@ void menuInsert(){
 
 int main() {
     Graph *graph = newGraph(); 
+
+    readData(graph);
     /*int flag = 1;
     char *nome = (char*)malloc(200*sizeof(char));
     do{
@@ -29,7 +31,6 @@ int main() {
 
 
    }while(flag); */
-   readData(graph);
    
    return 0;
 } 

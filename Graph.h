@@ -1,12 +1,11 @@
 #ifndef _GRAPH_KB
 #define _GRAPH_KB
 
+//MACROS
 #define ERROR -1
 #define SUCCESS 1
 
-#include <stdlib.h>
-#include <stdio.h>
-
+//STRUCTS
 typedef struct edge Edge;
 struct edge{
     int actor_id;
@@ -42,6 +41,7 @@ typedef struct graph{
    List_movie movieList;
 }Graph;
 
+//FUNCOES
 Graph *newGraph();
 
 Edge *newEdge(Actor *, Movie *);
@@ -62,7 +62,7 @@ int insertGraph();
 
 int readData(Graph *);
 
-int addGraph(Graph *,Edge*, int pos);
+int getActor(Graph *, char*);
 
 
 
