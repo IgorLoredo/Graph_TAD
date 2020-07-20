@@ -19,6 +19,13 @@ int main() {
     int option = 0, actorIndex;
     char *actorName = (char*) malloc (200*sizeof(char)); 
 
+    /*Edge *aux = (Edge*) malloc (sizeof(Edge));
+    aux = graph->nodeList.list[30]->head;
+    do{
+        printf("%s %d %d\n", graph->nodeList.list[aux->id]->name, aux->id, graph->nodeList.list[aux->id]->index);
+        aux = aux->next;
+    }while(aux);*/
+
     while(option != 3){
         menu();
         scanf("%d", &option);
