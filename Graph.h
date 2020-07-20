@@ -71,4 +71,6 @@ void searchActorKB(Graph *, int );
 
 void getKBworld(Graph *);
 
+void freeGraph(Graph*);
+
 #endif

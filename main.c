@@ -45,5 +45,8 @@ int main() {
         }
     }
 
-   return 0;
+    freeGraph(graph);
+    free(actorName);
+
+    return 0;
 } 

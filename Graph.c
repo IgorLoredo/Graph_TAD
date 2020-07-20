@@ -207,7 +207,3 @@ void searchActorKB(Graph *graph, int index){
     }
 
 }
-
-void getKBworld(Graph *graph){
-    
-}
