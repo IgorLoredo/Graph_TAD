@@ -231,3 +231,22 @@ void searchActorKB(Graph *graph, int index){
     }
 
 }
+
+void getKBworld(Graph *graph){
+
+
+}
+
+
+
+void freeGraph(Graph *graph){
+    int i;
+    for(i =0;i<graph->nodeList.nNodes;i++){
+        free(graph->nodeList.list[i]);
+    }
+    free(graph);
+}
+
+
+
+
