@@ -88,7 +88,7 @@ int printGraph(Graph *);
 
 void searchActorKB(Graph *, int );
 
-void getKBworld(Graph *);
+void getKBworld(Graph *, int);
 
 void freeGraph(Graph*);
 

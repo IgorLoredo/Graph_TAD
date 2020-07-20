@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
  
 Graph *newGraph(){
     Graph *graph = (Graph*)calloc(1, sizeof(Graph));
@@ -232,7 +233,79 @@ void searchActorKB(Graph *graph, int index){
 
 }
 
-void getKBworld(Graph *graph){
+void getKBworld(Graph *graph, int origem){
+    int i, pointer;
+    Edge *auxPointer;
+
+    Queue *queue = newQueue();
+    int *color = (int *)malloc(sizeof(int)*graph->nodeList.nNodes);
+    int *prev = (int *)malloc(sizeof(int)*graph->nodeList.nNodes);
+
+    int *dist = (int *)malloc(sizeof(int)*graph->nodeList.nNodes);
+
+    for(i = 0 ; i < graph->nodeList.nNodes; i++){
+        color[i] = 0;
+        prev[i] = -1;
+        dist[i] = -1;
+    }
+    
+    /*coloca a cor cinza */
+    color[origem] = 1;
+    push(queue, origem);
+
+     while(queue->tam >=0){
+        origem = pop(queue);
+        auxPointer = first_adj(graph,origem);
+        color[auxPointer->movie_id] = 1;
+       while(auxPointer != NULL){
+            pointer = auxPointer->actor_id;
+            if(color[pointer] == 0){
+                color[pointer] = 1;
+                push(queue,pointer);
+                prev[pointer] = origem;
+            }
+
+            auxPointer = next_adj(graph,auxPointer);
+        }
+     
+       color[pointer] =2; 
+    }
+
+    for(i = 0; i < graph->nodeList.nNodes;i++){
+        if(prev[i] != -1)
+        printf("%d ", prev[i]);
+    }
+    int aux_seach, cont, correct = 0,sum =0;
+    float mean = 0, desvion = 0;
+    for(i = 0; i < graph->nodeList.nNodes; i++){
+        aux_seach = prev[i];
+        cont = 0;
+        if(aux_seach == -1){
+            correct++;
+        }
+        while(aux_seach != origem &&  aux_seach != -1){
+            cont++;            
+            aux_seach = prev[aux_seach];
+             printf("cont : %d \n", cont);
+        }
+       
+        sum += cont/2;
+        dist[i] = (cont/2);
+
+    }
+
+     printf("sum %d\n", sum);
+    mean =(float)(sum/(graph->nodeList.nNodes  - correct));
+  
+    for(i = 0; i < graph->nodeList.nNodes; i++){
+        if(dist[i] != -1){
+            desvion += pow(dist[i] - mean, 2);
+        }
+    }
+    desvion = sqrt((desvion/(graph->nodeList.nNodes)));
+    
+    printf("\nMedia dos numeros de Kevin Bacon: %f", mean);
+    printf("\nDesvio Padrao numeros de Kevin Bacon: %f", desvion);
 
 
 }
@@ -246,7 +319,3 @@ void freeGraph(Graph *graph){
     }
     free(graph);
 }
-
-
-
-
