@@ -7,21 +7,36 @@
 //MACROS
 #define ERROR -1
 #define SUCCESS 1
+#define ACTOR 1
+#define MOVIE 2
 
 //STRUCTS
 typedef struct edge Edge;
 struct edge{
     int actor_id;
     int movie_id;
-    int KB;
     Edge *next;
 };
 
+typedef struct node{
+    char *name;
+    int index;
+    int type;
+    Edge *head;
+}Node;
+
+typedef struct list{
+    Node **list;
+    int nNodes;
+}List;
+
+/*
 typedef struct actor{
     char *name;
     int index;
     Edge *head;
 }Actor;
+
 
 typedef struct movie{
     char *name;
@@ -37,25 +52,29 @@ typedef struct list_movie{
 typedef struct list_actor{
    Actor **list;
    int nActor;
-}List_actor;
+}List_actor; */
 
 typedef struct graph{
-   List_actor actorlist;
-   List_movie movieList;
+   //List_actor actorlist;
+   //List_movie movieList;
+   List nodeList;
 }Graph;
 
 //FUNCOES
 Graph *newGraph();
 
-Edge *newEdge(Actor *, Movie *);
+Edge *newEdge(int, int);
 
-Actor *newActor(char *, int);
+Node *newNode(char*, int, int);
+/*Actor *newActor(char *, int);
 
 Movie *newMovie(char *, int);
 
 int insertActor(Graph *, Actor *);
 
-int insertMovie(Graph *, Movie *);
+int insertMovie(Graph *, Movie *);*/
+
+int insertNode(Graph *, Node *);
 
 int insertEdge(Graph *, Edge *);
 
