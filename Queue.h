@@ -13,5 +13,6 @@ Queue *newQueue();
 
 void push(Queue *,int );
 
+int pop(Queue*);
 
 #endif // !Queue_h

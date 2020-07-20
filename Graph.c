@@ -140,8 +140,29 @@ int printGraph(Graph *graph){
         printf("Ator: %s KB: %d \n",graph->actorlist.list[i]->name,graph->actorlist.list[i]->index);
     }
 
-    for(i =0; i <graph->movieList.nMovie; i++){
+    /*for(i =0; i <graph->movieList.nMovie; i++){
         printf("Filme: %s\n",graph->movieList.list[i]->name);
-    }
+    } */
     return SUCCESS;
+}
+
+
+void seachActorKB(Graph *graph, int origem){
+    int i, orige, prox;
+    Queue *fila = newQueue();
+    int *cor = (int *)malloc(sizeof(int)*graph->actorlist.nActor);
+    int *ante = (int *)malloc(sizeof(int)*graph->actorlist.nActor);
+    for(i = 0 ; i < graph->actorlist.nActor;i++){
+        cor[i] = 0;
+        ante[i] = -1;
+    }
+    
+    /*coloca a cor cinza */
+    cor[origem] = 1;
+    push(fila,origem);
+
+    while(fila->tam > 0){
+        orige = pop(fila);
+        
+    }
 }

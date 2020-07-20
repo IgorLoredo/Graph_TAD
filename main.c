@@ -19,6 +19,7 @@ int main() {
     Graph *graph = newGraph(); 
 
     readData(graph);
+    seachActorKB(graph,0);
     /*int flag = 1;
     char *nome = (char*)malloc(200*sizeof(char));
     do{
@@ -27,10 +28,10 @@ int main() {
        if(flag == 1){
            menuInsert();
            scanf("%d", &flag);
-
+ printGraph(graph);
    }while(flag); */
 
-   printGraph(graph);
+  
 
    return 0;
 } 
