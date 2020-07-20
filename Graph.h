@@ -28,7 +28,7 @@ typedef struct movie{
 }Movie;
 
 typedef struct list_movie{
-   Movie **list;
+   Movie *list;
    int nMovie;
 }List_movie;
 
@@ -54,7 +54,7 @@ int insertActor(Graph *, Actor *);
 
 int insertMovie(Graph *, Movie *);
 
-int insertEdge(Graph *, Edge *);
+int insertEdge(Graph *, Edge *, int);
 
 int checkActor(Graph *, char *);
 

@@ -26,10 +26,8 @@ int main() {
            menuInsert();
            scanf("%d", &flag);
 
-
-
    }while(flag); */
    readData(graph);
-   
+   printGraph(graph);
    return 0;
 } 
