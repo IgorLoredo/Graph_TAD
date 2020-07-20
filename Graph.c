@@ -12,23 +12,26 @@ Graph *newGraph(){
     return graph;
 }
 
-Edge *newEdge(Actor *actor, Movie *movie){
+Edge *newEdge(int actorIndex, int movieIndex){
     Edge *new = (Edge*)malloc(sizeof(Edge));
-    new->actor_id = actor->index;
-    new->movie_id = movie->index;
+    new->actor_id = actorIndex;
+    new->movie_id = movieIndex;
     new->next = NULL;
-    new->KB = -1;
     return new;
 }
 
-Actor *newActor(char *name, int index){
-    Actor *new  = (Actor*)malloc(sizeof(Actor));
+Node *newNode(char *name, int index, int type){
+    Node *new  = (Node*)malloc(sizeof(Node));
     new->name = (char*) malloc (strlen(name));
     memcpy(new->name, name, strlen(name));
     new->index = index;
+    new->type = type;
+    new->head = NULL;
+
     return new;
 }
 
+/*
 Movie *newMovie(char *name, int index){
     Movie *new = (Movie*)malloc(sizeof(Movie));
     new->name = (char*) malloc (strlen(name));
@@ -53,21 +56,35 @@ int insertMovie(Graph *graph, Movie *newMovie){
     graph->movieList.nMovie++;
 
     return SUCCESS;
+}*/
+
+int insertNode(Graph *graph, Node *newNode){
+    graph->nodeList.list = (Node**) realloc (graph->nodeList.list, sizeof(Node*)*(graph->nodeList.nNodes+1));
+    graph->nodeList.list[graph->nodeList.nNodes] = newNode;
+    graph->nodeList.nNodes++;
+    
+    return SUCCESS;
 }
 
 int insertEdge(Graph *graph, Edge *edge){
     if(!graph || !edge) return ERROR;
     
-    Edge *movieEdge = (Edge*) malloc (sizeof(Edge));
-    memcpy(movieEdge, edge, sizeof(Edge));
-    
-    edge->next = graph->actorlist.list[edge->actor_id]->head;
+    Edge *auxEdge = (Edge*) malloc (sizeof(Edge));
+    memcpy(auxEdge, edge, sizeof(Edge));
+
+    edge->next = graph->nodeList.list[edge->actor_id]->head;
+    graph->nodeList.list[edge->actor_id]->head = edge;
+
+    auxEdge->next = graph->nodeList.list[edge->movie_id]->head;
+    graph->nodeList.list[edge->movie_id]->head = auxEdge;
+
+    /*edge->next = graph->actorlist.list[edge->actor_id]->head;
     graph->actorlist.list[edge->actor_id]->head = edge;;
     
     movieEdge->next = graph->movieList.list[edge->movie_id]->head;
-    graph->movieList.list[movieEdge->movie_id]->head = movieEdge;
+    graph->movieList.list[movieEdge->movie_id]->head = movieEdge;*/
 
-    //printf("ator %s conectado no filme %s, filme %s conectado em ator %s\n", graph->actorlist.list[edge->actor_id]->name, graph->movieList.list[edge->movie_id]->name, graph->movieList.list[movieEdge->movie_id]->name, graph->actorlist.list[movieEdge->actor_id]->name);
+    //printf("ator %s conectado no filme %s, filme %s conectado em ator %s\n", graph->nodeList.list[edge->actor_id]->name, graph->nodeList.list[edge->movie_id]->name, graph->nodeList.list[edge->movie_id]->name, graph->nodeList.list[edge->actor_id]->name);
 
     return SUCCESS;
 }
@@ -75,8 +92,8 @@ int insertEdge(Graph *graph, Edge *edge){
 int checkActor(Graph *graph, char *name){
     int i;
     
-    for(i=0; i < graph->actorlist.nActor; i++){
-        if(!strcmp(graph->actorlist.list[i]->name, name))
+    for(i=0; i < graph->nodeList.nNodes; i++){
+        if(graph->nodeList.list[i]->type == ACTOR && !strcmp(graph->nodeList.list[i]->name, name))
             return i;
     }
 
@@ -88,29 +105,41 @@ int readData(Graph *graph){
     char *name = (char*)malloc(200*sizeof(char));
     char *kevinB = "Bacon, Kevin";
     char auxchar;
-    int flag = 1, actorIndex;
-    Movie *auxMovie;
-    Actor *auxActor;
+    int flag = 1, actorIndex, movieIndex;
+    /*Movie *auxMovie;
+    Actor *auxActor;*/
+    Node *auxNode;
     Edge *auxEdge;
     FILE *datafile = fopen("input-top-grossing.txt", "r");
     
     while (fscanf(datafile, "%[^/||^\n]%c", name, &auxchar) != EOF) {
         if(flag){
-            auxMovie = newMovie(name, graph->movieList.nMovie);
-            insertMovie(graph, auxMovie);
+            auxNode = newNode(name, graph->nodeList.nNodes, MOVIE);
+            insertNode(graph, auxNode);
+            movieIndex = auxNode->index;
+            //auxMovie = newMovie(name, graph->movieList.nMovie);
+            //insertMovie(graph, auxMovie);
         }
         else{
             actorIndex = checkActor(graph, name);
-            if(!strcmp(name, kevinB))   //checa se e o kevin bacon
-                auxActor = newActor(name, 0);
+
+            if(!strcmp(name, kevinB)){   //checa se e o kevin bacon
+                auxNode = newNode(name, 0, ACTOR);
+                if(!graph->nodeList.list[0])    
+                    insertNode(graph, auxNode);
+            }
+                //auxActor = newActor(name, 0);
             else if(actorIndex != 0)    //checa se o ator ja foi insertido
-                auxActor = newActor(name, actorIndex);
+                auxNode = newNode(name, actorIndex, ACTOR);
+                //auxActor = newActor(name, actorIndex);
             else {                       //caso nao seja nenhuma opcao anterior, insere um novo ator
-                auxActor = newActor(name, graph->actorlist.nActor);
-                insertActor(graph, auxActor);
+                auxNode = newNode(name, graph->nodeList.nNodes, ACTOR);
+                insertNode(graph, auxNode);
+                //auxActor = newActor(name, graph->actorlist.nActor);
+                //insertActor(graph, auxActor);
             }   
             
-            auxEdge = newEdge(auxActor, auxMovie);
+            auxEdge = newEdge(auxNode->index, movieIndex);
             insertEdge(graph, auxEdge);
             //printf("aresta entre %s e %s criada\n", graph->actorlist.list[auxEdge->actor_id]->name, graph->movieList.list[auxEdge->movie_id]->name);
         }
@@ -127,8 +156,8 @@ int readData(Graph *graph){
 
 int getActor(Graph *graph, char *name){
     int i;
-    for(i=0; i<graph->actorlist.nActor; i++){
-        if(!strcmp(graph->actorlist.list[i]->name, name))
+    for(i=0; i<graph->nodeList.nNodes; i++){
+        if(graph->nodeList.list[i]->type == ACTOR && !strcmp(graph->nodeList.list[i]->name, name))
             return i;
     }
 
@@ -139,8 +168,8 @@ int getActor(Graph *graph, char *name){
 int printGraph(Graph *graph){
     if(!graph) return ERROR;
     int i;
-    for(i = 0; i <graph->actorlist.nActor; i++){
-        printf("Ator: %s KB: %d \n",graph->actorlist.list[i]->name, graph->actorlist.list[i]->index);
+    for(i = 0; i <graph->nodeList.nNodes; i++){
+        printf("Ator: %s KB: %d \n",graph->nodeList.list[i]->name, graph->nodeList.list[i]->index);
     }
 
     /*for(i =0; i <graph->movieList.nMovie; i++){
@@ -150,8 +179,8 @@ int printGraph(Graph *graph){
 }
 
 Edge *first_adj(Graph *graph, int v){
-    if(graph->actorlist.list[v]->head)
-        return graph->actorlist.list[v]->head;
+    if(graph->nodeList.list[v]->head)
+        return graph->nodeList.list[v]->head;
 
     return NULL;
 }
@@ -167,42 +196,37 @@ void searchActorKB(Graph *graph, int index){
     int i, pointer;
     Edge *auxPointer;
 
-    Queue *queueA = newQueue();
-    Queue *queueM = newQueue();
-    int *colorA = (int *)malloc(sizeof(int)*graph->actorlist.nActor);
-    int *colorM = (int *)malloc(sizeof(int)*graph->movieList.nMovie);
-    int *prevA = (int *)malloc(sizeof(int)*graph->actorlist.nActor);
-    int *prevM = (int *)malloc(sizeof(int)*graph->actorlist.nActor);
+    Queue *queue = newQueue();
+    int *color = (int *)malloc(sizeof(int)*graph->nodeList.nNodes);
+    int *prev = (int *)malloc(sizeof(int)*graph->nodeList.nNodes);
 
-    for(i = 0 ; i < graph->actorlist.nActor; i++){
-        colorA[i] = 0;
-        prevA[i] = -1;
+    for(i = 0 ; i < graph->nodeList.nNodes; i++){
+        color[i] = 0;
+        prev[i] = -1;
     }
     
-    for(i = 0 ; i < graph->movieList.nMovie; i++){
-        colorM[i] = 0;
-        prevM[i] = -1;
-    }
     /*coloca a cor cinza */
-    colorA[index] = 1;
-    push(queueA, index);
+    color[index] = 1;
+    push(queue, index);
 
-    while(queueA->tam >= 0){
-        index = pop(queueA);
+    while(queue->tam >= 0){
+        index = pop(queue);
         auxPointer = first_adj(graph, index);
-        colorM[auxPointer->movie_id] = 1;
+        color[auxPointer->movie_id] = 1;
+        push(queue, auxPointer->movie_id);
+
         while(auxPointer){
-            pointer = auxPointer->movie_id;
-            if(colorA[pointer] == 0){
-                colorA[pointer] = 1;
-                push(queueA, pointer);
-                prevA[pointer] = index;
+            pointer = auxPointer->actor_id;
+            if(color[pointer] == 0){
+                color[pointer] = 1;
+                push(queue, pointer);
+                prev[pointer] = index;
             }
             auxPointer = next_adj(graph, auxPointer);
         }
-        colorA[pointer] = 2;
+        color[pointer] = 2;
     }
-    if(prevA[0] == -1){
+    if(prev[0] == -1){
         printf("Ator nao tem ligacao com Kevin Bacon\n");
     }
 
