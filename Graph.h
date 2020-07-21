@@ -61,6 +61,8 @@ int next_adj(Graph *, Edge **);
 
 void searchActorKB(Graph *, int );
 
-void getKBworld(Graph *);
+void getKBworld(Graph *, int);
+
+void freeGraph(Graph*);
 
 #endif
