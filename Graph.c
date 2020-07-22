@@ -232,7 +232,7 @@ void getKBworld(Graph *graph, int origem){
                 /*setar valores para o vetor q guarda valores das distancias*/
     memset(dist,-1,(sizeof(int))*graph->nodeList.nNodes);
 
-    /*setar vetor de marcacao e cria uma fila*/
+    /*setar vetor de marcacao e cria uma fila */
    Queue *queue = newQueue();
     int *color = (int *)malloc(sizeof(int)*graph->nodeList.nNodes);
     int *prev = (int *)malloc(sizeof(int)*graph->nodeList.nNodes);
