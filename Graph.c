@@ -25,7 +25,7 @@ Edge *newEdge(int index){
 
 Node *newNode(char *name, int index, int type){
     Node *new  = (Node*)malloc(sizeof(Node));
-    new->name = (char*) malloc (strlen(name)+1);
+    new->name = (char*) malloc (strlen(name));
     memcpy(new->name, name, strlen(name));
     new->index = index;
     new->type = type;
@@ -160,7 +160,7 @@ int next_adj(Graph *graph, Edge **pointer){
 }
 
 void searchActorKB(Graph *graph, int index){
-    int i, pointer;
+    int i, pointer, origin = index, aux, kb, track[20];
     Queue *queue = newQueue();
     Edge *auxPointer = (Edge*) malloc (sizeof(Edge));
     int *color = (int *)malloc(sizeof(int)*graph->nodeList.nNodes);
@@ -183,27 +183,44 @@ void searchActorKB(Graph *graph, int index){
             if(color[pointer] == BRANCO){
                 color[pointer] = CINZA;
                 push(queue, pointer);
-                //printf("pointer: %d  index: %d\n", pointer, index);
                 path[pointer] = index;
             }
             pointer = next_adj(graph, &auxPointer);
         }    
         color[index] = PRETO;
     }
-    if(path[0] != -1){
-        printf("Conexao com kevin encontrada!\n");
+
+    if(path[0] == -1){
+        printf("%s nao tem conexao com Kevin Bacon\n", graph->nodeList.list[origin]->name);
+        return;
     }
-    printf("Tem conexao com o kevin!\n");
-    
-    int aux = path[0];
-    int kb = 1;
+
+    aux = path[0];
+    kb = 0;
+    pointer = 0;
     while(aux != -1){
+        track[kb] = aux;
         aux = path[aux];
         kb++;
     }
 
-    printf("kb = %d\n", (kb/2));
+    printf("\n\n%s tem KB = %d\n", graph->nodeList.list[origin]->name, kb/2);
+    for(i=kb-1; i>=0; i--){
+        aux = track[i];
+        if(graph->nodeList.list[aux]->type == ACTOR){
+            printf("%s ", graph->nodeList.list[aux]->name);
+        }
+        else if(graph->nodeList.list[aux]->type == MOVIE){
+            printf(" atuou em %s com ", graph->nodeList.list[aux]->name);
+        }
+        if(i%2 == 1 && i<kb-1){
+            printf("\n");
+            printf("%s ", graph->nodeList.list[aux]->name);
+        }
+    }
+    printf("%s \n", graph->nodeList.list[0]->name);
 }
+
 /*
 void getKBworld(Graph *graph, int origem){
     int i, pointer;
