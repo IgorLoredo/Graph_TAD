@@ -8,13 +8,15 @@
 
 typedef struct queue{
     int *Queue;
-    int tam;
-    int front;
+    int size;
+    int first;
 }Queue;
 
 Queue *newQueue();
 
 void push(Queue *,int );
+
+int empty(Queue*);
 
 int pop(Queue*);
 

@@ -25,7 +25,7 @@ Edge *newEdge(int index){
 
 Node *newNode(char *name, int index, int type){
     Node *new  = (Node*)malloc(sizeof(Node));
-    new->name = (char*) malloc (strlen(name));
+    new->name = (char*) malloc (strlen(name)+1);
     memcpy(new->name, name, strlen(name));
     new->index = index;
     new->type = type;
@@ -35,9 +35,14 @@ Node *newNode(char *name, int index, int type){
 }
 
 int insertNode(Graph *graph, Node *newNode){
-    graph->nodeList.list = (Node**) realloc (graph->nodeList.list, sizeof(Node*)*(graph->nodeList.nNodes+2));
+    char *kevinB = "Bacon, Kevin";
+
+    if(strcmp(newNode->name, kevinB) != 0){
+        graph->nodeList.list = (Node**) realloc (graph->nodeList.list, sizeof(Node*)*(graph->nodeList.nNodes+2));
+        graph->nodeList.nNodes++; 
+    }
+
     graph->nodeList.list[newNode->index] = newNode;
-    graph->nodeList.nNodes++;
     
     return SUCCESS;
 }
@@ -159,86 +164,86 @@ void searchActorKB(Graph *graph, int index){
     Queue *queue = newQueue();
     Edge *auxPointer = (Edge*) malloc (sizeof(Edge));
     int *color = (int *)malloc(sizeof(int)*graph->nodeList.nNodes);
-    int *prev = (int *)malloc(sizeof(int)*graph->nodeList.nNodes);
+    int *path = (int *)malloc(sizeof(int)*graph->nodeList.nNodes);
 
     for(i = 0 ; i < graph->nodeList.nNodes; i++){
         color[i] = BRANCO;
-        prev[i] = -1;
+        path[i] = -1;
     }
     
     /*coloca a cor cinza */
     color[index] = CINZA;
     push(queue, index);
 
-    while(queue->tam > 0){
+    while(!empty(queue)){
         index = pop(queue);
         pointer = first_adj(graph, index, &auxPointer);
-       // printf("%d %s\n", pointer, graph->nodeList.list[pointer]->name);
+
         while(pointer != ERROR){
             if(color[pointer] == BRANCO){
                 color[pointer] = CINZA;
                 push(queue, pointer);
-                prev[pointer] = index;
+                //printf("pointer: %d  index: %d\n", pointer, index);
+                path[pointer] = index;
             }
             pointer = next_adj(graph, &auxPointer);
-            //printf("%d\n", pointer);
         }    
         color[index] = PRETO;
     }
-    if(prev[0] == -1){
-        printf("Ator nao tem ligacao com Kevin Bacon\n");
-        return;
+    if(path[0] != -1){
+        printf("Conexao com kevin encontrada!\n");
     }
-    else{
-        printf("Tem conexao com o kevin!\n");
-    }
+    printf("Tem conexao com o kevin!\n");
     
+    int aux = path[0];
+    int kb = 1;
+    while(aux != -1){
+        aux = path[aux];
+        kb++;
+    }
+
+    printf("kb = %d\n", (kb/2));
 }
+
 
 void getKBworld(Graph *graph, int origem){
     int i, pointer;
     Edge *auxPointer;
 
-    Queue *queue = newQueue();
+   Queue *queue = newQueue();
     int *color = (int *)malloc(sizeof(int)*graph->nodeList.nNodes);
     int *prev = (int *)malloc(sizeof(int)*graph->nodeList.nNodes);
 
     int *dist = (int *)malloc(sizeof(int)*graph->nodeList.nNodes);
 
     for(i = 0 ; i < graph->nodeList.nNodes; i++){
-        color[i] = 0;
-        prev[i] = -1;
-        dist[i] = -1;
+        color[i] = BRANCO;
+        prev[i] = -1;        
     }
-    
-    /*coloca a cor cinza */
-    color[origem] = 1;
+
+    color[origem] = CINZA;
     push(queue, origem);
 
-     while(queue->tam >=0){
+    while(!empty(queue)){
         origem = pop(queue);
-        auxPointer = first_adj(graph,origem);
-        color[auxPointer->movie_id] = 1;
-       while(auxPointer != NULL){
-            pointer = auxPointer->actor_id;
-            if(color[pointer] == 0){
-                color[pointer] = 1;
-                push(queue,pointer);
+        pointer = first_adj(graph, origem, &auxPointer);
+       // printf("%d %s\n", pointer, graph->nodeList.list[pointer]->name);
+        while(pointer != ERROR){
+            if(color[pointer] == BRANCO){
+                color[pointer] = CINZA;
+                push(queue, pointer);
                 prev[pointer] = origem;
             }
-
-            auxPointer = next_adj(graph,auxPointer);
-        }
-     
-       color[pointer] =2; 
+            pointer = next_adj(graph, &auxPointer);
+            
+        }    
+        color[origem] = PRETO;
     }
 
-    for(i = 0; i < graph->nodeList.nNodes;i++){
-        if(prev[i] != -1)
-        printf("%d ", prev[i]);
-    }
+    
     int aux_seach, cont, correct = 0,sum =0;
     float mean = 0, desvion = 0;
+
     for(i = 0; i < graph->nodeList.nNodes; i++){
         aux_seach = prev[i];
         cont = 0;
@@ -246,7 +251,7 @@ void getKBworld(Graph *graph, int origem){
             correct++;
         }
         while(aux_seach != origem &&  aux_seach != -1){
-            cont++;            
+            cont+=1;            
             aux_seach = prev[aux_seach];
              printf("cont : %d \n", cont);
         }
@@ -254,10 +259,10 @@ void getKBworld(Graph *graph, int origem){
         sum += cont/2;
         dist[i] = (cont/2);
 
-    }
+    } 
 
      printf("sum %d\n", sum);
-    mean =(float)(sum/(graph->nodeList.nNodes  - correct));
+    mean =(float)(sum/(graph->nodeList.nNodes  - correct)); 
   
     for(i = 0; i < graph->nodeList.nNodes; i++){
         if(dist[i] != -1){
@@ -268,7 +273,6 @@ void getKBworld(Graph *graph, int origem){
     
     printf("\nMedia dos numeros de Kevin Bacon: %f", mean);
     printf("\nDesvio Padrao numeros de Kevin Bacon: %f", desvion);
-
 
 }
 
