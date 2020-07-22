@@ -124,29 +124,15 @@ int getActor(Graph *graph, char *name){
         if(graph->nodeList.list[i]->type == ACTOR && !strcmp(graph->nodeList.list[i]->name, name))
             return i;
     }
-
     return ERROR;
 }
 
-int printGraph(Graph *graph){
-    if(!graph) return ERROR;
-    int i;
-    for(i = 0; i <graph->nodeList.nNodes; i++){
-        printf("Ator: %s KB: %d \n",graph->nodeList.list[i]->name, graph->nodeList.list[i]->index);
-    }
-
-    /*for(i =0; i <graph->movieList.nMovie; i++){
-        printf("Filme: %s\n",graph->movieList.list[i]->name);
-    } */
-    return SUCCESS;
-}
 
 int first_adj(Graph *graph, int v, Edge **pointer){
     if(graph->nodeList.list[v]->head){
         (*pointer) = graph->nodeList.list[v]->head;
         return (*pointer)->id;
     }
-
     return ERROR;
 }
 
@@ -232,7 +218,7 @@ void getKBworld(Graph *graph, int origem){
                 /*setar valores para o vetor q guarda valores das distancias*/
     memset(dist,-1,(sizeof(int))*graph->nodeList.nNodes);
 
-    /*setar vetor de marcacao e cria uma fila */
+    /*setar vetor de marcacao e cria uma fila*/
    Queue *queue = newQueue();
     int *color = (int *)malloc(sizeof(int)*graph->nodeList.nNodes);
     int *prev = (int *)malloc(sizeof(int)*graph->nodeList.nNodes);
