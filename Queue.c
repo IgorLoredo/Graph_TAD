@@ -9,22 +9,30 @@
 
 Queue *newQueue(){
     Queue *new = (Queue*)calloc(1,sizeof(Queue));
-    new->tam =0;
-    new->front  = 0;
+
     return new;
 }
 
-void push(Queue *queue,int val){
-    queue->Queue = (int*)realloc(queue->Queue, sizeof(int)*(queue->tam+1));
-    queue->Queue[queue->tam] = val;
-    queue->tam += 1;
+void push(Queue *queue, int value){
+    queue->Queue = (int*)realloc(queue->Queue, sizeof(int)*(queue->size+1));
+    queue->Queue[queue->size] = value;
+    queue->size++;
+}
+
+int empty(Queue *queue){
+    if(queue->size == 0)    return 1;
+    else                return 0;
 }
 
 // retorna front, o primeiro item da fila
 int pop(Queue *queue){
-    int front = queue->Queue[queue->front];
-    memcpy(queue, &queue[1], (queue->tam)*sizeof(int));
-    queue->tam--;
-    return front;
-}
+    int first = ERROR, i;
 
+    if(!empty(queue)){
+        first = queue->Queue[0];
+        for(i=0; i<queue->size-1; i++)
+            queue->Queue[i] = queue->Queue[i+1];
+        queue->size--;
+    }
+    return first;
+}

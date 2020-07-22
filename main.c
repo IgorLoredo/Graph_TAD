@@ -45,7 +45,7 @@ int main() {
         
         case 2:
             /*colocar o index do bk*/
-            getKBworld(graph, 0);
+            //getKBworld(graph, 0);
             break;
             
         default:

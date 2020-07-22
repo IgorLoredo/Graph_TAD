@@ -175,7 +175,7 @@ void searchActorKB(Graph *graph, int index){
     color[index] = CINZA;
     push(queue, index);
 
-    while(queue->tam > 0){
+    while(!empty(queue)){
         index = pop(queue);
         pointer = first_adj(graph, index, &auxPointer);
 
@@ -192,7 +192,6 @@ void searchActorKB(Graph *graph, int index){
     }
     if(path[0] != -1){
         printf("Conexao com kevin encontrada!\n");
-        //printf("%d \n", path[0]);
     }
     printf("Tem conexao com o kevin!\n");
     
@@ -205,7 +204,7 @@ void searchActorKB(Graph *graph, int index){
 
     printf("kb = %d\n", (kb/2));
 }
-
+/*
 void getKBworld(Graph *graph, int origem){
     int i, pointer;
     Edge *auxPointer;
@@ -222,16 +221,16 @@ void getKBworld(Graph *graph, int origem){
         dist[i] = -1;
     }
     
-    /*coloca a cor cinza */
+    coloca a cor cinza 
     color[origem] = 1;
     push(queue, origem);
 
      while(queue->tam >=0){
         origem = pop(queue);
-        auxPointer = first_adj(graph,origem);
-        color[auxPointer->movie_id] = 1;
+        //auxPointer = first_adj(graph,origem);
+        //color[auxPointer->movie_id] = 1;
        while(auxPointer != NULL){
-            pointer = auxPointer->actor_id;
+            //pointer = auxPointer->actor_id;
             if(color[pointer] == 0){
                 color[pointer] = 1;
                 push(queue,pointer);
@@ -281,7 +280,7 @@ void getKBworld(Graph *graph, int origem){
     printf("\nDesvio Padrao numeros de Kevin Bacon: %f", desvion);
 
 
-}
+}*/
 
 
 
