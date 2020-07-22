@@ -244,8 +244,6 @@ void getKBworld(Graph *graph, int origem){
 
      while(queue->tam >=0){
         origem = pop(queue);
-        //auxPointer = first_adj(graph,origem);
-        //color[auxPointer->movie_id] = 1;
        while(auxPointer != NULL){
             //pointer = auxPointer->actor_id;
             if(color[pointer] == 0){
