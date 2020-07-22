@@ -225,24 +225,30 @@ void getKBworld(Graph *graph, int origem){
     int i, pointer;
     Edge *auxPointer;
 
+    /*criacao das variaveis auxiliares para ajudar a fazer a media de desvio padrao*/
+    int aux_seach, cont, correct = 0;
+    float sum =0, mean = 0, desvion = 0;
+    int *dist = (int *)malloc(sizeof(int)*graph->nodeList.nNodes);
+                /*setar valores para o vetor q guarda valores das distancias*/
+    memset(dist,-1,(sizeof(int))*graph->nodeList.nNodes);
+
+    /*setar vetor de marcacao e cria uma fila*/
    Queue *queue = newQueue();
     int *color = (int *)malloc(sizeof(int)*graph->nodeList.nNodes);
     int *prev = (int *)malloc(sizeof(int)*graph->nodeList.nNodes);
 
-    int *dist = (int *)malloc(sizeof(int)*graph->nodeList.nNodes);
-
-    for(i = 0 ; i < graph->nodeList.nNodes; i++){
-        color[i] = BRANCO;
-        prev[i] = -1;        
-    }
+    memset(color,BRANCO,(sizeof(int))*graph->nodeList.nNodes);
+    memset(prev,-1,(sizeof(int))*graph->nodeList.nNodes);
+  
 
     color[origem] = CINZA;
     push(queue, origem);
 
+    /*ficar no while até zerar a fila*/
+    /**/
     while(!empty(queue)){
         origem = pop(queue);
         pointer = first_adj(graph, origem, &auxPointer);
-       // printf("%d %s\n", pointer, graph->nodeList.list[pointer]->name);
         while(pointer != ERROR){
             if(color[pointer] == BRANCO){
                 color[pointer] = CINZA;
@@ -252,31 +258,30 @@ void getKBworld(Graph *graph, int origem){
             pointer = next_adj(graph, &auxPointer);
             
         }    
+        /*marcar posicao q ele ja entrou*/
         color[origem] = PRETO;
     }
 
-    
-    int aux_seach, cont, correct = 0;
-    float sum =0, mean = 0, desvion = 0;
+
+    /*procura os atores que nao tem contato com kb e faz a media com os kb existentes*/
     for(i = 0; i < graph->nodeList.nNodes; i++){
         aux_seach = prev[i];
         cont = 0;
-        if(aux_seach == -1){
-            correct++;
+        if(aux_seach == -1){ /* verficar os kb que estão zerados */
+            correct++; /*conta quantos atores nao tem ligação com kb*/
         }
         while(aux_seach != origem &&  aux_seach != -1){
-            cont+=1;            
+            cont++;            
             aux_seach = prev[aux_seach];
         }
-       
         sum += cont/2;
         dist[i] = (cont/2);
-
     } 
 
-     
+    /*media do kb*/
     mean =(float)(sum/(graph->nodeList.nNodes  - correct)); 
   
+  /*soma os valores e faz o desvio medio*/
     for(i = 0; i < graph->nodeList.nNodes; i++){
         if(dist[i] != -1){
             desvion += pow(dist[i] - mean, 2);
@@ -284,8 +289,8 @@ void getKBworld(Graph *graph, int origem){
     }
     desvion = sqrt((desvion/(graph->nodeList.nNodes)));
     
-    printf("\nMedia dos numeros de Kevin Bacon: %f", mean);
-    printf("\nDesvio Padrao numeros de Kevin Bacon: %f", desvion);
+    printf("\nMedia dos numeros de KB: %f", mean);
+    printf("\nDesvio padrao: %f", desvion);
 
 }
 

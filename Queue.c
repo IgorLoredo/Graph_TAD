@@ -7,9 +7,9 @@
 #include <stdio.h>
 #include <string.h>
 
+/*funcoes para manipulacoes de fila*/
 Queue *newQueue(){
     Queue *new = (Queue*)calloc(1,sizeof(Queue));
-
     return new;
 }
 
