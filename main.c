@@ -7,9 +7,9 @@
 
 void menu(){
     printf("\n Six Degrees of Kevin Bacon\n");
-    printf("\n    Numero de Kevin Bacon - 1");
-    printf("\n    Mundo de Kevin Bacon  - 2");
-    printf("\n    Terminar              - 3\n");
+    printf("\n    Number Kevin Bacon    - 1");
+    printf("\n    World of Kevin Bacon  - 2");
+    printf("\n    Finish                - 3\n");
 }
 
 int main() {
@@ -19,13 +19,6 @@ int main() {
     int option = 0, actorIndex;
     char *actorName = (char*) malloc (200*sizeof(char)); 
 
-    /*Edge *aux = (Edge*) malloc (sizeof(Edge));
-    aux = graph->nodeList.list[30]->head;
-    do{
-        printf("%s %d %d\n", graph->nodeList.list[aux->id]->name, aux->id, graph->nodeList.list[aux->id]->index);
-        aux = aux->next;
-    }while(aux);*/
-
     while(option != 3){
         menu();
         scanf("%d", &option);
@@ -33,19 +26,19 @@ int main() {
         switch (option)
         {
         case 1:
-            printf("Insira o nome do ator que deseja saber o KB:\n");
+            printf("Insert the name of an actor that you want to know the KB:\n");
             scanf(" %[^\n]s", actorName);
             actorIndex = getActor(graph, actorName);
             if(actorIndex < 0){
-                printf("Ator nao encontrado!\n");
+                printf("Actor not found!\n");
                 break;
             }
             searchActorKB(graph, actorIndex);
             break;
         
         case 2:
-            /*colocar o index do bk*/
-            //getKBworld(graph, 0);
+            /*put the index of KB*/
+            getKBworld(graph, 0);
             break;
             
         default:
