@@ -48,6 +48,5 @@ int main() {
 
     freeGraph(graph);
     free(actorName);
-
     return 0;
 } 

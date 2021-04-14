@@ -75,7 +75,6 @@ int checkActor(Graph *graph, char *name){
         if(graph->nodeList.list[i]->type == ACTOR && !strcmp(graph->nodeList.list[i]->name, name))
             return i;
     }
-
     return 0;
 }
 
@@ -149,7 +148,6 @@ int next_adj(Graph *graph, Edge **pointer){
         (*pointer) = (*pointer)->next;
         return (*pointer)->id;
     }
-
     return ERROR;
 }
 
@@ -255,16 +253,19 @@ void getKBworld(Graph *graph, int origin){
     for(i = 0; i < graph->nodeList.nNodes; i++){
         aux_seach = prev[i];
         cont = 0;
+
         if(aux_seach == -1) /*check those with kb = 0*/
             correct++;  /*number of actors that doesn't have a connection with KB*/
+
         while(aux_seach != origin &&  aux_seach != -1){
             cont+=1;            
             aux_seach = prev[aux_seach];
         }
+
         sum += cont/2;
         dist[i] = (cont/2);
     } 
-    mean =(float)(sum/(graph->nodeList.nNodes  - correct)); 
+    mean = (float)(sum/(graph->nodeList.nNodes  - correct)); 
   
     /*sum values and mean calc*/
     for(i = 0; i < graph->nodeList.nNodes; i++){
