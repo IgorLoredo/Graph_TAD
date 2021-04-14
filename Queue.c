@@ -10,7 +10,6 @@
 /*create a new queue*/
 Queue *newQueue(){
     Queue *new = (Queue*)calloc(1,sizeof(Queue));
-
     return new;
 }
 

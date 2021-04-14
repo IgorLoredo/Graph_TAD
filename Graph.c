@@ -131,7 +131,6 @@ int getActor(Graph *graph, char *name){
         if(graph->nodeList.list[i]->type == ACTOR && !strcmp(graph->nodeList.list[i]->name, name))
             return i;
     }
-
     return ERROR;
 }
 
@@ -141,7 +140,6 @@ int first_adj(Graph *graph, int v, Edge **pointer){
         (*pointer) = graph->nodeList.list[v]->head;
         return (*pointer)->id;
     }
-
     return ERROR;
 }
 
@@ -223,16 +221,18 @@ void searchActorKB(Graph *graph, int index){
 void getKBworld(Graph *graph, int origin){
     int i, pointer;
     Edge *auxPointer;
+    int aux_seach, cont, correct = 0;
+    float sum = 0, mean = 0, desvion = 0;
 
-   Queue *queue = newQueue();
+    int *dist = (int *)malloc(sizeof(int)*graph->nodeList.nNodes);
+    memset(dist,-1,(sizeof(int))*graph->nodeList.nNodes);
+    
+    Queue *queue = newQueue();
     int *color = (int *)malloc(sizeof(int)*graph->nodeList.nNodes);
     int *prev = (int *)malloc(sizeof(int)*graph->nodeList.nNodes);
-    int *dist = (int *)malloc(sizeof(int)*graph->nodeList.nNodes);
-
-    for(i = 0 ; i < graph->nodeList.nNodes; i++){
-        color[i] = WHITE;
-        prev[i] = -1;        
-    }
+    
+    memset(color, WHITE, (sizeof(int))*graph->nodeList.nNodes);
+    memset(prev, -1, (sizeof(int))*graph->nodeList.nNodes);
 
     color[origin] = GREY;
     push(queue, origin);
@@ -251,30 +251,28 @@ void getKBworld(Graph *graph, int origin){
         color[origin] = BLACK;
     }
 
-    int aux_seach, cont, correct = 0;
-    float sum =0, mean = 0, desvion = 0;
+    /*search actors that doesn't have a connection and calculates the mean with the kb values*/
     for(i = 0; i < graph->nodeList.nNodes; i++){
         aux_seach = prev[i];
         cont = 0;
-        if(aux_seach == -1)
-            correct++;
+        if(aux_seach == -1) /*check those with kb = 0*/
+            correct++;  /*number of actors that doesn't have a connection with KB*/
         while(aux_seach != origin &&  aux_seach != -1){
             cont+=1;            
             aux_seach = prev[aux_seach];
         }
-       
         sum += cont/2;
         dist[i] = (cont/2);
     } 
-
     mean =(float)(sum/(graph->nodeList.nNodes  - correct)); 
   
+    /*sum values and mean calc*/
     for(i = 0; i < graph->nodeList.nNodes; i++){
         if(dist[i] != -1)
             desvion += pow(dist[i] - mean, 2);
     }
     desvion = sqrt((desvion/(graph->nodeList.nNodes)));
-    
+
     printf("\nMean numbers of Kevin Bacon: %f", mean);
     printf("\nStandard deviation numbers of Kevin Bacon: %f", desvion);
 }
