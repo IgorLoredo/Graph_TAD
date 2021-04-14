@@ -1,5 +1,5 @@
 # Graph_TAD
-Project developed for the Algorithms and Data Structures subject of ICMC - University of São Paulo
+Project developed for the Algorithms and Data Structures II subject of ICMC - University of São Paulo
 
 This project creates a solution towards the Six Degrees of Kevin Bacon Law using Graphs and ANSI C.
 
