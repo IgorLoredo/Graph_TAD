@@ -7,24 +7,26 @@
 #include <stdio.h>
 #include <string.h>
 
-/*funcoes para manipulacoes de fila*/
+/*create a new queue*/
 Queue *newQueue(){
     Queue *new = (Queue*)calloc(1,sizeof(Queue));
     return new;
 }
 
+/*add a new item in the queue*/
 void push(Queue *queue, int value){
     queue->Queue = (int*)realloc(queue->Queue, sizeof(int)*(queue->size+1));
     queue->Queue[queue->size] = value;
     queue->size++;
 }
 
+/*check if the queue is empty*/
 int empty(Queue *queue){
     if(queue->size == 0)    return 1;
     else                return 0;
 }
 
-// retorna front, o primeiro item da fila
+/*returns and remove the first item of queue*/
 int pop(Queue *queue){
     int first = ERROR, i;
 

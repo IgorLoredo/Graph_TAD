@@ -6,12 +6,14 @@
 
 #include "Graph.h"
 
+/*STRUCT*/
 typedef struct queue{
     int *Queue;
     int size;
     int first;
 }Queue;
 
+/*FUNCTIONS*/
 Queue *newQueue();
 
 void push(Queue *,int );
@@ -20,4 +22,4 @@ int empty(Queue*);
 
 int pop(Queue*);
 
-#endif // !Queue_h
+#endif

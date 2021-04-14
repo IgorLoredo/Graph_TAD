@@ -4,16 +4,16 @@
 #ifndef _GRAPH_KB
 #define _GRAPH_KB
 
-//MACROS
+/*MACROS*/
 #define ERROR -1
 #define SUCCESS 1
 #define ACTOR 1
 #define MOVIE 2
-#define BRANCO 0
-#define CINZA 1
-#define PRETO 2
+#define WHITE 0
+#define GREY 1
+#define BLACK 2
 
-//STRUCTS
+/*STRUCTS*/
 typedef struct edge Edge;
 struct edge{
     int id;
@@ -36,7 +36,7 @@ typedef struct graph{
    List nodeList;
 }Graph;
 
-//FUNCOES
+/*FUNCTIONS*/
 Graph *newGraph();
 
 Edge *newEdge(int);
@@ -52,8 +52,6 @@ int checkActor(Graph *, char *);
 int readData(Graph *);
 
 int getActor(Graph *, char*);
-
-int printGraph(Graph *);
 
 int first_adj(Graph *, int, Edge **);
 
